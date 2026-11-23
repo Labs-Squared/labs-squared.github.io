@@ -1,0 +1,293 @@
+:root {
+  --color-bg: #040a18;
+  --color-object: #124558;
+  --color-fg: #b1ccd7;
+  --color-fg-hover-bg: rgba(177, 204, 215, 0.09);
+  --color-fg-active-bg: rgba(177, 204, 215, 0.16);
+  --font-mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", "SFMono-Regular",
+    Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-mono);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  overflow: hidden;
+}
+
+.page {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  height: 100svh;
+  height: 100dvh;
+  overflow: hidden;
+  background-color: var(--color-bg);
+  isolation: isolate;
+}
+
+/* Background media stage */
+.stage-media {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+  background-color: var(--color-bg);
+}
+
+.stage-media-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform-origin: 50% 50%;
+}
+
+.stage-poster,
+.stage-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.stage-poster {
+  background-color: var(--color-bg);
+  background-image: url("assets/shapes-poster.webp");
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.stage-video {
+  object-fit: cover;
+  object-position: 50% 50%;
+  background-color: transparent;
+}
+
+.js .stage-video {
+  opacity: 0;
+  transition: opacity 280ms ease;
+}
+
+.js .stage-video.is-ready {
+  opacity: 1;
+}
+
+/* Top-left brand mark */
+.site-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  padding: clamp(1.25rem, 2.8vw, 2.25rem) clamp(1.25rem, 3.2vw, 2.75rem);
+  pointer-events: none;
+}
+
+.brand {
+  margin: 0;
+  font-size: clamp(0.875rem, 1.05vw, 1.0625rem);
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 0.03em;
+  color: var(--color-fg);
+  pointer-events: auto;
+}
+
+/* Centered hero typography & stacked links */
+.hero {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: clamp(4.25rem, 9vh, 6rem) clamp(1.25rem, 4vw, 3rem) clamp(2rem, 6vh, 4rem);
+}
+
+.hero-heading {
+  margin: 0;
+  max-width: 100%;
+  font-size: clamp(1.5rem, 3.45vw, 3.375rem);
+  font-weight: 700;
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+  color: var(--color-fg);
+  text-wrap: balance;
+}
+
+.hero-actions {
+  margin-top: clamp(1.75rem, 4.2vh, 2.75rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(0.625rem, 1.3vh, 0.875rem);
+  width: 100%;
+}
+
+.action-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: min(100%, 13.5rem);
+  min-height: 2.5rem;
+  padding: 0.5625rem 1.25rem;
+  border: 1px solid var(--color-fg);
+  border-radius: 6px;
+  background-color: transparent;
+  color: var(--color-fg);
+  font-family: var(--font-mono);
+  font-size: clamp(0.8125rem, 0.92vw, 0.9375rem);
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 0.03em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 180ms ease, transform 180ms ease;
+}
+
+.action-button:hover {
+  background-color: var(--color-fg-hover-bg);
+  transform: translateY(-1px);
+}
+
+.action-button:active {
+  background-color: var(--color-fg-active-bg);
+  transform: translateY(0);
+}
+
+.action-button:focus-visible {
+  outline: 2px solid var(--color-fg);
+  outline-offset: 3px;
+  background-color: var(--color-fg-hover-bg);
+}
+
+/* Keep main heading on one line when width comfortably allows */
+@media (min-width: 768px) {
+  .hero-heading {
+    white-space: nowrap;
+  }
+}
+
+/* Portrait framing so both massive 3D shapes stay recognizable on mobile/tablet */
+@media (max-aspect-ratio: 4/5) {
+  .stage-media-frame {
+    transform: scale(1.45);
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      #000 14%,
+      #000 86%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      #000 14%,
+      #000 86%,
+      transparent 100%
+    );
+  }
+
+  .stage-poster {
+    background-size: contain;
+  }
+
+  .stage-video {
+    object-fit: contain;
+  }
+}
+
+@media (max-aspect-ratio: 9/16) {
+  .stage-media-frame {
+    transform: scale(1.6);
+  }
+}
+
+/* Compact mobile phones */
+@media (max-width: 480px) {
+  .hero-heading {
+    font-size: clamp(1.375rem, 6.4vw, 1.875rem);
+    line-height: 1.22;
+  }
+
+  .action-button {
+    width: min(100%, 13rem);
+    min-height: 2.75rem;
+  }
+}
+
+/* Very short landscape viewports */
+@media (max-height: 420px) {
+  .site-header {
+    padding: 0.875rem 1.25rem;
+  }
+
+  .hero {
+    padding: 3rem 1.25rem 1.25rem;
+  }
+
+  .hero-actions {
+    margin-top: 1rem;
+    gap: 0.5rem;
+  }
+
+  .action-button {
+    min-height: 2.25rem;
+    padding: 0.4375rem 1rem;
+  }
+}
+
+@media (max-height: 320px) {
+  body {
+    overflow-y: auto;
+  }
+
+  .page {
+    height: auto;
+    min-height: 100dvh;
+  }
+}
+
+/* Reduced motion preference: always show static poster, disable motion */
+@media (prefers-reduced-motion: reduce) {
+  .stage-video {
+    display: none !important;
+  }
+
+  .js .stage-video {
+    transition: none;
+  }
+
+  .action-button {
+    transition: background-color 120ms ease;
+  }
+
+  .action-button:hover,
+  .action-button:active {
+    transform: none;
+  }
+}
